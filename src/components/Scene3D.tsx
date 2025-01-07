@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -32,7 +32,6 @@ const ParticleField = () => {
           count={positions.length / 3}
           array={positions}
           itemSize={3}
-          usage={THREE.StaticDrawUsage}
         />
       </bufferGeometry>
       <pointsMaterial
@@ -53,16 +52,18 @@ export const Scene3D = () => {
         camera={{ position: [0, 0, 20] }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <ParticleField />
-        <OrbitControls 
-          enableZoom={false} 
-          autoRotate 
-          autoRotateSpeed={0.5}
-          enableDamping={true}
-          dampingFactor={0.05}
-        />
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <ParticleField />
+          <OrbitControls 
+            enableZoom={false} 
+            autoRotate 
+            autoRotateSpeed={0.5}
+            enableDamping={true}
+            dampingFactor={0.05}
+          />
+        </Suspense>
       </Canvas>
     </div>
   );
