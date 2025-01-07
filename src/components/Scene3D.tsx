@@ -24,12 +24,7 @@ export const Scene3D = () => {
     <div className="h-screen w-full absolute top-0 left-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
-        gl={{ 
-          antialias: true,
-          alpha: true,
-        }}
       >
-        <color attach="background" args={['#000']} />
         <Scene />
       </Canvas>
     </div>
