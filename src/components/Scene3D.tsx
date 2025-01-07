@@ -1,10 +1,9 @@
-import { useRef, Suspense } from "react";
+import { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import * as THREE from "three";
 
 const ParticleField = () => {
-  const points = useRef<THREE.Points>(null);
   const count = 2000;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
@@ -24,17 +23,17 @@ const ParticleField = () => {
   }
 
   return (
-    <points ref={points}>
+    <points>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
+          count={count}
           array={positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={colors.length / 3}
+          count={count}
           array={colors}
           itemSize={3}
         />
@@ -53,7 +52,6 @@ const ParticleField = () => {
 const Scene = () => {
   return (
     <>
-      <color attach="background" args={['#000']} />
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
       <Stars 
@@ -78,13 +76,10 @@ export const Scene3D = () => {
         gl={{ 
           antialias: true,
           alpha: true,
-          powerPreference: "high-performance",
         }}
-        dpr={[1, 2]}
       >
-        <Suspense fallback={null}>
-          <Scene />
-        </Suspense>
+        <color attach="background" args={['#000']} />
+        <Scene />
       </Canvas>
     </div>
   );
