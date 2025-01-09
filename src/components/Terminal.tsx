@@ -26,7 +26,7 @@ export const Terminal = () => {
 
     switch (input.toLowerCase().trim()) {
       case "help":
-        response = "Available commands: help, about, github, twitter, clear";
+        response = "Available commands: help, about, github, documentation, twitter, clear";
         break;
       case "about":
         response = "Mikasa AI Trading - Your gateway to the future of algorithmic trading.";
@@ -34,6 +34,10 @@ export const Terminal = () => {
       case "github":
         window.open("https://github.com", "_blank");
         response = "Opening GitHub...";
+        break;
+      case "documentation":
+        window.open("https://sample.com", "_blank");
+        response = "Opening documentation...";
         break;
       case "twitter":
         window.open("https://twitter.com", "_blank");
@@ -83,7 +87,7 @@ export const Terminal = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-black/90 rounded-lg p-4 font-mono text-sm h-[400px] overflow-y-auto w-full max-w-3xl mx-auto"
+      className="bg-black/90 rounded-lg p-4 font-mono text-sm h-[600px] overflow-y-auto w-full max-w-4xl mx-auto"
     >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-3 h-3 rounded-full bg-red-500" />
