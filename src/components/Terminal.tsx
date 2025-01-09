@@ -29,7 +29,7 @@ export const Terminal = () => {
         response = "Available commands: help, about, github, documentation, twitter, clear";
         break;
       case "about":
-        response = "Mikasa AI Trading - Your gateway to the future of algorithmic trading.";
+        response = "Mikasa - Your gateway to the future of coding.";
         break;
       case "github":
         window.open("https://github.com", "_blank");
@@ -60,7 +60,7 @@ export const Terminal = () => {
               messages: [
                 {
                   role: "system",
-                  content: "You are a helpful AI trading assistant. Keep responses concise and trading-focused.",
+                  content: "You are a helpful coding assistant. Keep responses concise and coding-focused.",
                 },
                 {
                   role: "user",
@@ -87,7 +87,7 @@ export const Terminal = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-black/90 rounded-lg p-4 font-mono text-sm h-[600px] overflow-y-auto w-full max-w-4xl mx-auto m-4"
+      className="bg-black/80 rounded-lg p-6 font-mono text-sm h-[400px] overflow-y-auto w-full max-w-3xl mx-auto backdrop-blur-sm border border-gray-800"
     >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -95,15 +95,15 @@ export const Terminal = () => {
         <div className="w-3 h-3 rounded-full bg-green-500" />
       </div>
 
-      <div className="text-green-400 mb-4">
-        Welcome to Mikasa AI Trading Terminal
+      <div className="text-cyan-400 mb-4">
+        > $MIKASA is now online.
         Type 'help' for available commands.
       </div>
 
       {commands.map((cmd, index) => (
         <div key={index} className="mb-2">
           <div className="flex items-center text-white">
-            <span className="text-green-400">$ </span>
+            <span className="text-cyan-400">{">"}</span>
             <span className="ml-2">{cmd.input}</span>
           </div>
           <div className="text-gray-300 ml-4 mt-1">{cmd.output}</div>
@@ -111,7 +111,7 @@ export const Terminal = () => {
       ))}
 
       <div className="flex items-center mt-2">
-        <span className="text-green-400">$ </span>
+        <span className="text-cyan-400">{">"}</span>
         <input
           type="text"
           value={currentInput}
@@ -127,7 +127,7 @@ export const Terminal = () => {
         />
       </div>
       {isLoading && (
-        <div className="text-green-400 ml-4 mt-2">Processing...</div>
+        <div className="text-cyan-400 ml-4 mt-2">Processing...</div>
       )}
       <div ref={terminalEndRef} />
     </motion.div>
