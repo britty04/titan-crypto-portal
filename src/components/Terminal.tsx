@@ -87,7 +87,7 @@ export const Terminal = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-black/90 rounded-lg p-4 font-mono text-sm h-[600px] overflow-y-auto w-full max-w-4xl mx-auto"
+      className="bg-black/90 rounded-lg p-4 font-mono text-sm h-[600px] overflow-y-auto w-full max-w-4xl mx-auto m-4"
     >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-3 h-3 rounded-full bg-red-500" />
