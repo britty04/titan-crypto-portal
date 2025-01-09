@@ -10,6 +10,7 @@ export const Terminal = () => {
   const [commands, setCommands] = useState<Command[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem("openai_api_key") || "");
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -26,10 +27,10 @@ export const Terminal = () => {
 
     switch (input.toLowerCase().trim()) {
       case "help":
-        response = "Available commands: help, about, github, documentation, twitter, clear";
+        response = "Available commands: help, about, github, documentation, twitter, clear, set-api-key";
         break;
       case "about":
-        response = "Mikasa - Your gateway to the future of coding.";
+        response = "MikasaAI - Your gateway to the future of coding.";
         break;
       case "github":
         window.open("https://github.com", "_blank");
@@ -47,13 +48,27 @@ export const Terminal = () => {
         setCommands([]);
         setIsLoading(false);
         return;
+      case "set-api-key":
+        const key = prompt("Please enter your OpenAI API key:");
+        if (key) {
+          localStorage.setItem("openai_api_key", key);
+          setApiKey(key);
+          response = "API key has been set successfully.";
+        } else {
+          response = "API key setting was cancelled.";
+        }
+        break;
       default:
+        if (!apiKey) {
+          response = "Please set your OpenAI API key first using the 'set-api-key' command.";
+          break;
+        }
         try {
           const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+              Authorization: `Bearer ${apiKey}`,
             },
             body: JSON.stringify({
               model: "gpt-4",
@@ -71,10 +86,14 @@ export const Terminal = () => {
             }),
           });
 
+          if (!aiResponse.ok) {
+            throw new Error("API request failed");
+          }
+
           const data = await aiResponse.json();
           response = data.choices[0].message.content;
         } catch (error) {
-          response = "Error processing your request. Please try again.";
+          response = "Error processing your request. Please check your API key and try again.";
         }
     }
 
@@ -87,7 +106,7 @@ export const Terminal = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-black/80 rounded-lg p-6 font-mono text-sm h-[400px] overflow-y-auto w-full max-w-3xl mx-auto backdrop-blur-sm border border-gray-800"
+      className="bg-black/80 rounded-lg p-6 font-mono text-sm h-[400px] overflow-y-auto w-full max-w-3xl mx-auto backdrop-blur-sm border border-mikasa-red/30"
     >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -96,14 +115,14 @@ export const Terminal = () => {
       </div>
 
       <div className="text-cyan-400 mb-4">
-        > $MIKASA is now online.
-        Type 'help' for available commands.
+        {'>'} $MikasaAI is now online.
+        {'\n'}Type 'help' for available commands.
       </div>
 
       {commands.map((cmd, index) => (
         <div key={index} className="mb-2">
           <div className="flex items-center text-white">
-            <span className="text-cyan-400">{">"}</span>
+            <span className="text-cyan-400">{'>'}</span>
             <span className="ml-2">{cmd.input}</span>
           </div>
           <div className="text-gray-300 ml-4 mt-1">{cmd.output}</div>
@@ -111,7 +130,7 @@ export const Terminal = () => {
       ))}
 
       <div className="flex items-center mt-2">
-        <span className="text-cyan-400">{">"}</span>
+        <span className="text-cyan-400">{'>'}</span>
         <input
           type="text"
           value={currentInput}
